@@ -6,8 +6,8 @@ compatibility_date = "2024-01-01"
 directory = "../dist"
 
 # Deploy command:
-# npm run build
-# npx wrangler deploy -c cloudflare/site-wrangler.toml
+# npm run build:cloudflare-worker
+# npm run deploy:cloudflare-worker
 
 # Optional custom domain route:
 # routes = [

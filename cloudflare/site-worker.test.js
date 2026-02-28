@@ -30,10 +30,15 @@ test('builds language and root html candidate paths correctly', () => {
     '/about.html',
     '/about/index.html',
   ]);
-  assert.deepEqual(makeHtmlCandidatePaths('/fr'), ['/fr/index.html']);
+  assert.deepEqual(makeHtmlCandidatePaths('/fr'), [
+    '/fr/index.html',
+    '/index.html',
+  ]);
   assert.deepEqual(makeHtmlCandidatePaths('/fr/about'), [
     '/fr/about.html',
     '/fr/about/index.html',
+    '/about.html',
+    '/about/index.html',
   ]);
 });
 
@@ -47,6 +52,23 @@ test('does not fall back to index for missing static assets with extension', asy
 
   const response = await resolveRequest(request, env);
   assert.equal(response.status, 404);
+});
+
+test('falls back to english page when localized html is missing', async () => {
+  const env = makeEnv({
+    '/about.html': {
+      body: 'about-en',
+      headers: { 'Content-Type': 'text/html' },
+    },
+  });
+
+  const request = new Request('https://example.com/fr/about', {
+    headers: { accept: 'text/html' },
+  });
+
+  const response = await resolveRequest(request, env);
+  assert.equal(response.status, 200);
+  assert.equal(await response.text(), 'about-en');
 });
 
 test('falls back to index for navigation requests only', async () => {

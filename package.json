@@ -35,7 +35,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky",
-    "deploy:cloudflare-worker": "npm run build && npx wrangler deploy -c cloudflare/site-wrangler.toml"
+    "deploy:cloudflare-worker": "npm run build:cloudflare-worker && npx wrangler deploy -c cloudflare/site-wrangler.toml",
+    "build:cloudflare-worker": "vite build"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

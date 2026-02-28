@@ -59,18 +59,29 @@ function makeHtmlCandidatePaths(pathname) {
 
   const parts = trimmedPath.split('/').filter(Boolean);
   const maybeLang = parts[0];
-  const restParts = SUPPORTED_LANGUAGES.includes(maybeLang)
-    ? parts.slice(1)
-    : parts;
-
-  const base = SUPPORTED_LANGUAGES.includes(maybeLang) ? `/${maybeLang}` : '';
+  const isLangRoute = SUPPORTED_LANGUAGES.includes(maybeLang);
+  const restParts = isLangRoute ? parts.slice(1) : parts;
+  const restPath = restParts.join('/');
 
   if (restParts.length === 0) {
-    return base ? [`${base}/index.html`] : ['/index.html'];
+    if (isLangRoute) {
+      return [`/${maybeLang}/index.html`, '/index.html'];
+    }
+    return ['/index.html'];
   }
 
-  const restPath = restParts.join('/');
-  return [`${base}/${restPath}.html`, `${base}/${restPath}/index.html`];
+  const englishCandidates = [`/${restPath}.html`, `/${restPath}/index.html`];
+
+  if (!isLangRoute) {
+    return englishCandidates;
+  }
+
+  const localizedCandidates = [
+    `/${maybeLang}/${restPath}.html`,
+    `/${maybeLang}/${restPath}/index.html`,
+  ];
+
+  return [...localizedCandidates, ...englishCandidates];
 }
 
 async function fetchAsset(request, env, pathname) {

@@ -80,14 +80,16 @@ If you prefer Workers instead of Pages, BentoPDF now includes a static asset wor
 ### 1. Build the site
 
 ```bash
-npm run build
+npm run build:cloudflare-worker
 ```
+
+> This uses a lighter Worker build (`vite build`) to avoid memory-related failures in constrained CI environments.
 
 ### 2. Deploy the worker
 
 ```bash
 npx wrangler login
-npx wrangler deploy -c cloudflare/site-wrangler.toml
+npm run deploy:cloudflare-worker
 ```
 
 This worker serves files from `dist/`, supports language/page routes like `/fr/about`, and adds the `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers required for LibreOffice WASM features.
