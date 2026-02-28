@@ -73,6 +73,35 @@ Create `_redirects` for SPA routing:
 /*    /index.html   200
 ```
 
+## Deploy as a Cloudflare Worker (Static Assets)
+
+If you prefer Workers instead of Pages, BentoPDF now includes a static asset worker at `cloudflare/site-worker.js`.
+
+### 1. Build the site
+
+```bash
+npm run build
+```
+
+### 2. Deploy the worker
+
+```bash
+npx wrangler login
+npx wrangler deploy -c cloudflare/site-wrangler.toml
+```
+
+This worker serves files from `dist/`, supports language/page routes like `/fr/about`, and adds the `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers required for LibreOffice WASM features.
+
+### 3. Optional custom domain
+
+Set `routes` in `cloudflare/site-wrangler.toml`, then redeploy:
+
+```toml
+routes = [
+  { pattern = "pdf.example.com/*", zone_name = "example.com" }
+]
+```
+
 ## Custom Domain
 
 1. Go to your Pages project
