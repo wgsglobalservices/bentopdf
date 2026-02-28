@@ -36,7 +36,7 @@
     "lint:fix": "eslint . --fix",
     "prepare": "husky",
     "deploy:cloudflare-worker": "npm run build:cloudflare-worker && npx wrangler deploy -c cloudflare/site-wrangler.toml",
-    "build:cloudflare-worker": "vite build"
+    "build:cloudflare-worker": "NODE_OPTIONS='--max-old-space-size=3072' vite build"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

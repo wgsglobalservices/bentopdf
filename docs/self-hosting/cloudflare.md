@@ -83,13 +83,19 @@ If you prefer Workers instead of Pages, BentoPDF now includes a static asset wor
 npm run build:cloudflare-worker
 ```
 
-> This uses a lighter Worker build (`vite build`) to avoid memory-related failures in constrained CI environments.
+> This uses a lighter Worker build with an explicit Node heap limit (`NODE_OPTIONS=--max-old-space-size=3072 vite build`) to reduce out-of-memory failures in constrained CI environments.
 
 ### 2. Deploy the worker
 
 ```bash
 npx wrangler login
 npm run deploy:cloudflare-worker
+```
+
+If Wrangler runs this inside CI and you still see OOM, set an environment variable in your build environment:
+
+```bash
+NODE_OPTIONS=--max-old-space-size=3072
 ```
 
 This worker serves files from `dist/`, supports language/page routes like `/fr/about`, and adds the `Cross-Origin-Embedder-Policy` and `Cross-Origin-Opener-Policy` headers required for LibreOffice WASM features.

@@ -7,6 +7,7 @@ directory = "../dist"
 
 # Deploy command:
 # npm run build:cloudflare-worker
+# (uses NODE_OPTIONS=--max-old-space-size=3072)
 # npm run deploy:cloudflare-worker
 
 # Optional custom domain route:
