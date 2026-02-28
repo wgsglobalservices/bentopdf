@@ -34,7 +34,8 @@
     "docs:preview": "vitepress preview docs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy:cloudflare-worker": "npm run build && npx wrangler deploy -c cloudflare/site-wrangler.toml"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
